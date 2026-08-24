@@ -1,12 +1,12 @@
 {
   "name": "markov-engine-2.0",
   "version": "2.0.0",
-  "description": "Predictive Memory Pre-Fetcher & Error Cache for Walrus Memory (Walrus Session 7)",
-  "main": "eval_harness.js",
+  "description": "Predictive Memory Pre-Fetcher & Deterministic Error Cache on Walrus Memory (Walrus Session 7)",
+  "main": "src/markov_state_machine.js",
   "scripts": {
-    "test": "node eval_harness.js",
-    "benchmark": "node eval_harness.js",
-    "live": "node live_memwal_runner.js"
+    "test": "node tests/run_markov_benchmark.js",
+    "benchmark": "node tests/run_markov_benchmark.js",
+    "live": "node scripts/test_mainnet_live.js"
   },
   "dependencies": {
     "@mysten-incubation/memwal": "^0.1.3",

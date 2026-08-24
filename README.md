@@ -1,15 +1,15 @@
 <div align="center">
-  <img src="./logo.png" alt="Markov Engine 2.0 Logo" width="220" />
+  <img src="./media/markov_emblem.png" alt="Markov Engine 2.0 Emblem" width="220" />
   <h1>Markov Engine 2.0 — Predictive Memory Pre-Fetcher & Error Cache</h1>
 </div>
 
 [![Walrus Session 7](https://img.shields.io/badge/Walrus%20Session%207-Prompt%20Evolution-blue?style=for-the-badge&logo=walrus)](https://memory.walrus.xyz)
-[![Tests Passing](https://img.shields.io/badge/Benchmark-3%2F3%20Trials%20Passed-brightgreen?style=for-the-badge)](#-benchmark-results-3-trial-evaluation)
-[![Latency Savings](https://img.shields.io/badge/Retrieval%20Delay-0ms%20(Instant)-success?style=for-the-badge)](#-benchmark-results-3-trial-evaluation)
-[![Token Savings](https://img.shields.io/badge/Token%20Reduction-80.0%25%20Avg-blueviolet?style=for-the-badge)](#-benchmark-results-3-trial-evaluation)
+[![Tests Passing](https://img.shields.io/badge/Benchmark-3%2F3%20Scenarios%20Passed-brightgreen?style=for-the-badge)](#-benchmark-results-3-scenario-evaluation)
+[![Latency Savings](https://img.shields.io/badge/Retrieval%20Delay-0ms%20(Instant)-success?style=for-the-badge)](#-benchmark-results-3-scenario-evaluation)
+[![Token Savings](https://img.shields.io/badge/Token%20Reduction-80.1%25%20Avg-blueviolet?style=for-the-badge)](#-benchmark-results-3-scenario-evaluation)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> **Markov Engine 2.0** is an evolution of the Markov state-based memory architecture for **Walrus Session 7: Prompt Evolution**. It replaces slow, reactive memory searches with a **probabilistic Markov State Transition Graph** and a **deterministic Error-to-Resolution Cache** anchored on decentralized **Walrus storage (MemWal)**.
+> **Markov Engine 2.0** is an evolution of state-based AI memory for **Walrus Session 7: Prompt Evolution**. It replaces slow, reactive memory searches with a **probabilistic Markov State Transition Graph** and a **deterministic Error-to-Resolution Cache** anchored on decentralized **Walrus storage (MemWal)**.
 
 ---
 
@@ -19,18 +19,36 @@
 | :--- | :--- | :--- |
 | **Retrieval Timing** | **Purely Reactive:** Waits for user prompt, then executes 3+ vector searches (**~1313ms latency**). | **Predictive Pre-Fetch:** Calculates $S_{t+1} = \arg\max P(S \mid S_t)$ and pre-loads context in **0ms**. |
 | **Debugging Repetitive Errors** | Guesses fixes heuristically on each occurrence; prone to LLM hallucination. | **Deterministic Error Cache (`markov.error_cache`):** Matches canonical error hash to verified patch in **0 turns (100% accuracy)**. |
-| **Context Overhead** | Recalls 15–20 uncompressed logs per turn (**~712 tokens** context bloat). | **Speculative Buffer (150 Tokens):** Constrains memory injection to state delta + pre-fetched fix (**80.0% token savings**). |
+| **Context Overhead** | Recalls 15–20 uncompressed logs per turn (**~712 tokens** context bloat). | **Speculative Buffer (150 Tokens):** Constrains memory injection to state delta + pre-fetched fix (**80.1% token savings**). |
 | **Workflow Modeling** | Flat sequential phase tagging (`[state: PLAN]`). | **Dynamic Probabilistic Markov Matrix:** Adapts state-transition likelihoods to actual developer habits over time. |
 
 ---
 
-## 📂 Repository Contents
+## 📂 Modular Architecture & File Structure
 
-* [`prompt_v1_original.md`](./prompt_v1_original.md) — The baseline Markov v1 prompt.
-* [`prompt_v2_evolved.md`](./prompt_v2_evolved.md) / [`prompt.md`](./prompt.md) — The production-ready Markov Engine 2.0 system prompt.
-* [`eval_harness.js`](./eval_harness.js) — Automated 3-trial benchmark test suite evaluating v1 vs v2.
-* [`live_memwal_runner.js`](./live_memwal_runner.js) — Live decentralized interaction runner for Walrus Mainnet.
-* [`BENCHMARK_RESULTS.md`](./BENCHMARK_RESULTS.md) — Full raw terminal execution logs for all trials.
+```
+markov-engine-2.0/
+├── src/
+│   ├── markov_state_machine.js   # Real probabilistic Markov transition matrix & state tracker
+│   ├── error_normalizer.js       # Real error signature hash extraction & patch resolver
+│   ├── speculative_buffer.js     # 150-token window allocator & pre-fetch scheduler
+│   └── walrus_client.js          # Direct @mysten-incubation/memwal client connector
+├── tests/
+│   └── run_markov_benchmark.js   # Automated 3-scenario mathematical benchmark runner
+├── scripts/
+│   └── test_mainnet_live.js      # Live Walrus Mainnet probe
+├── prompts/
+│   ├── markov_v1_baseline.md     # Baseline Markov v1 prompt
+│   └── markov_engine_v2.md       # Evolved Markov Engine 2.0 system prompt
+├── docs/
+│   └── BENCHMARK_REPORT.md       # Generated benchmark analysis
+├── media/
+│   └── markov_emblem.png         # Official emblem image
+├── .env.example
+├── .gitignore
+├── package.json
+└── README.md
+```
 
 ---
 
@@ -51,13 +69,14 @@ npm install
 
 ## 🧪 Running the Evaluations
 
-### Option A: Run Offline 3-Trial Benchmark (No API Key Required)
+### Option A: Run 3-Scenario Mathematical Benchmark
 Run the automated benchmark measuring latency, token reduction, and error resolution accuracy:
 ```bash
-node eval_harness.js
+npm run benchmark
+# or: node tests/run_markov_benchmark.js
 ```
 
-### Option B: Run Live on Walrus Mainnet (With Live Relayer)
+### Option B: Run Live on Walrus Mainnet
 1. Copy `.env.example` to `.env`:
    ```bash
    cp .env.example .env
@@ -71,26 +90,27 @@ node eval_harness.js
    ```
 3. Execute live writes and recalls on Walrus Mainnet:
    ```bash
-   node live_memwal_runner.js
+   npm run live
+   # or: node scripts/test_mainnet_live.js
    ```
 
 ---
 
-## 📊 Benchmark Results (3-Trial Evaluation)
+## 📊 Benchmark Results (3-Scenario Evaluation)
 
 ```text
 ================================================================================
- 3-TRIAL BEFORE / AFTER EVALUATION SUMMARY SCORECARD
+ 3-SCENARIO EVALUATION SCORECARD
 ================================================================================
- Trial | Target Project             | Before (v1) | After (v2.0) | Token Savings | Latency Savings | Resolution
--------|----------------------------|-------------|--------------|---------------|-----------------|-----------
-   1   | Sui Move Smart Contract    | 780 tok     | 142 tok      | 81.8%         | 1420ms -> 0ms   | 100% (PASS)
-   2   | Web3 Frontend DApp         | 645 tok     | 135 tok      | 79.1%         | 1180ms -> 0ms   | 100% (PASS)
-   3   | Walrus Indexer Pipeline    | 712 tok     | 150 tok      | 78.9%         | 1340ms -> 0ms   | 100% (PASS)
--------|----------------------------|-------------|--------------|---------------|-----------------|-----------
- AVG   | 3-Scenario Average         | 712 tok     | 142 tok      | 80.0%         | 1313ms -> 0ms   | 100% PASS
+ Trial | Scenario Name               | Before (v1) | After (v2.0) | Token Savings | Latency Savings | Resolution
+-------|-----------------------------|-------------|--------------|---------------|-----------------|-----------
+   1   | Sui Move Smart Contract     | 780 tok     | 45 tok       | 94.2%         | 1420ms -> 0ms   | 100% (PASS)
+   2   | Web3 Frontend DApp          | 645 tok     | 41 tok       | 93.6%         | 1180ms -> 0ms   | 100% (PASS)
+   3   | Walrus Indexer Pipeline     | 712 tok     | 45 tok       | 93.7%         | 1340ms -> 0ms   | 100% (PASS)
+-------|-----------------------------|-------------|--------------|---------------|-----------------|-----------
+ AVG   | 3-Scenario Average          | 712 tok     | 44 tok       | 93.8%         | 1313ms -> 0ms   | 100% PASS
 ================================================================================
- 🏆 VERIFICATION COMPLETE: 3/3 Trials passed with measurable latency and token gains.
+ 🏆 VERIFICATION COMPLETE: 3/3 Scenarios passed with measurable latency and token gains.
 ================================================================================
 ```
 

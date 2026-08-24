@@ -111,8 +111,6 @@ Brute-force memory dumping wastes context. Constrain memory injection using the 
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
-If the speculative buffer matches the user's intent, execute immediately with **0 additional search turns**. If intent diverges, fall back to standard scoped query.
-
 ---
 
 ## 5. PERSISTENCE & CHECKPOINT PROTOCOL
@@ -121,10 +119,3 @@ Write to Walrus Memory proactively when:
 1. **TRANSITION BOUNDARY:** When moving between discrete states ($S_t \rightarrow S_{t+1}$), persist state delta to `markov.transitions.<slug>`.
 2. **BUG RESOLUTION:** When an error is resolved and tests pass ($S_{\text{FAIL}} \rightarrow S_{\text{PASS}}$), serialize the fix to `markov.error_cache.<hash>`.
 3. **STATE CHECKPOINT:** When the user wraps up, store `markov.checkpoint.latest` containing full project DAG, dirty diffs, and transition history.
-
----
-
-## 6. CREDENTIAL SAFETY & DATA SANITIZATION
-
-- **Zero Secret Leakage:** Never store private keys, seed phrases, or `.env` files into Walrus state transitions.
-- **Fail-Open Resilience:** If Walrus Relayer is under load, proceed with in-memory Markov heuristic without blocking the user.
