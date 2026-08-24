@@ -1,8 +1,5 @@
-/**
- * Walrus Memory (MemWal) Client Wrapper
- */
-
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 class WalrusClient {
   constructor(config = {}) {
