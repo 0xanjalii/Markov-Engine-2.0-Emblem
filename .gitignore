@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Environment Variables & Keys (Keep Private)
+.env
+.env.local
+*.key
+
+# OS / Logs
+*.log
+.DS_Store
+Thumbs.db

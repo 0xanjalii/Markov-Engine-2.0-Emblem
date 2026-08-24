@@ -1,0 +1,17 @@
+{
+  "name": "markov-engine-2.0",
+  "version": "2.0.0",
+  "description": "Predictive Memory Pre-Fetcher & Error Cache for Walrus Memory (Walrus Session 7)",
+  "main": "eval_harness.js",
+  "scripts": {
+    "test": "node eval_harness.js",
+    "benchmark": "node eval_harness.js",
+    "live": "node live_memwal_runner.js"
+  },
+  "dependencies": {
+    "@mysten-incubation/memwal": "^0.1.3",
+    "dotenv": "^16.4.5"
+  },
+  "author": "0xanjalii <anjalimetals17@gmail.com>",
+  "license": "MIT"
+}
