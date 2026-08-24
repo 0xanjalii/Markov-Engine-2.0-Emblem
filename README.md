@@ -150,7 +150,7 @@ Evaluated across 3 distinct Web3 development domains (Sui Move Smart Contracts, 
 
 ## 🙏 Credits & Attribution
 
-* **Original Concept (Markov v1):** Created for earlier Walrus Memory sessions exploring state-tagged developer memory.
+* **Original Concept & Prompt (Markov v1):** Created by [@dun999](https://github.com/dun999) in [dun999/markov](https://github.com/dun999/markov) for earlier Walrus Memory sessions.
 * **Markov Engine 2.0 Evolution:** Built by [@0xanjalii](https://github.com/0xanjalii) for **Walrus Session 7: Prompt Evolution**.
 * **Decentralized Storage & Memory Layer:** Powered by [Walrus Protocol](https://walrus.xyz) and [@mysten-incubation/memwal](https://github.com/MystenLabs/MemWal).
 
